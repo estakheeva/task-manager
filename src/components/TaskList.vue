@@ -26,15 +26,23 @@
   </template>
 
   <script setup>
+    import { ref } from 'vue'
     import { useTasksStore } from '../store/tasksStore'
 
     const tasksStore = useTasksStore()
     const tasks = tasksStore.tasks
+    const newTaskText = ref('')
 
     // Add new task function
   const addTask = () => {
+    if (!newTaskText.value.trim()) return
     const newId = tasksStore.tasks.length + 1
-    tasksStore.addTask({ id: newId, title: `Новая задача ${newId}`, done: false })
+  tasksStore.addTask({
+    id: newId,
+    title: newTaskText.value,
+    done: false
+  })
+  newTaskText.value = ''
   }
 
   const toggleDone = (id) => {
@@ -68,7 +76,6 @@
   button#addTask{
     background-color: #3498db;
     color: white;
-    margin-top: 40px;
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
