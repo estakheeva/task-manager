@@ -5,11 +5,18 @@ describe('Tasks page actions', () => {
     cy.visit('http://localhost:5173/tasks')
   })
 
-  it('adds a new task when clicking Add task', () => {
-    // используем уникальный id кнопки добавления
-    cy.get('#addTask').click()
-cy.get('.task-item').last().should('contain.text', 'Новая задача')
-  })
+  it('adds a new task when typing in input and clicking Add task', () => {
+  const taskTitle = 'Моя новая задача'
+
+  // вводим текст в поле input
+  cy.get('input[placeholder="Введите задачу"]').type(taskTitle)
+
+  // кликаем кнопку добавить
+  cy.get('#addTask').click()
+
+  // проверяем, что задача появилась в списке
+  cy.contains(taskTitle).should('exist')
+})
 
   it('marks a task as done when checkbox is clicked', () => {
     cy.get('.task-item').first().as('firstTask')
